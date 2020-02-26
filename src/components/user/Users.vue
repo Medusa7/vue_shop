@@ -63,6 +63,7 @@
             </template>
           </el-table-column>
         </el-table>
+
         <!-- 分页功能 -->
         <el-pagination
           @size-change="handleSizeChange"
@@ -120,12 +121,17 @@
     </el-dialog>
 
     <!-- 分配角色对话框 -->
-    <el-dialog title="分配角色" :visible.sync="setRoleDialogVisible" width="50%">
+    <el-dialog
+      title="分配角色"
+      :visible.sync="setRoleDialogVisible"
+      width="50%"
+      @close="setRoleDialogClosed"
+    >
       <div>
         <p>当前用户:{{userInfo.username}}</p>
         <p>
           分配角色:
-          <el-select v-model="selectedRoleId" placeholder="请选择">
+          <el-select v-model="selectedRoleId" :placeholder="userInfo.role_name">
             <el-option
               v-for="item in rolesList"
               :key="item.id"
@@ -244,7 +250,7 @@ export default {
       this.getUserList()
     },
     handleCurrentChange (newPage) {
-      console.log(newPage)
+      // console.log(newPage)
 
       this.queryInfo.pagenum = newPage
       this.getUserList()
@@ -348,6 +354,7 @@ export default {
     },
     async setRole (user) {
       this.userInfo = user
+
       const { data: res } = await this.$http.get('roles')
       if (res.meta.status !== 200) {
         return this.$message.error('获取角色列表失败')
@@ -360,9 +367,12 @@ export default {
         return this.$message.error('请选择要分配的角色')
       }
 
-      const { data: res } = await this.$http.put(`users/${this.userInfo.id}/role`, {
-        rid: this.selectedRoleId
-      })
+      const { data: res } = await this.$http.put(
+        `users/${this.userInfo.id}/role`,
+        {
+          rid: this.selectedRoleId
+        }
+      )
       // console.log(res)
 
       if (res.meta.status !== 200) {
@@ -372,6 +382,11 @@ export default {
       this.$message.success('更新角色成功')
       this.getUserList()
       this.setRoleDialogVisible = false
+    },
+    setRoleDialogClosed () {
+      this.selectedRoleId = ''
+      // console.log(this.selectedRoleId)
+      this.userInfo = {}
     }
   }
 }
