@@ -152,7 +152,8 @@ export default {
         value: 'cat_id',
         label: 'cat_name',
         children: 'children',
-        expandTrigger: 'hover'
+        expandTrigger: 'hover',
+        checkStrictly: 'true'
       }
     }
   },
