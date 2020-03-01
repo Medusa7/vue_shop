@@ -43,8 +43,8 @@
         </template>
         <!-- 操作 -->
         <template slot="top">
-          <el-button type="primary" icon="el-cion-edit" size="mini">编辑</el-button>
-          <el-button type="danger" icon="el-cion-delete" size="mini">删除</el-button>
+          <el-button type="primary" icon="el-icon-edit" size="mini">编辑</el-button>
+          <el-button type="danger" icon="el-icon-delete" size="mini">删除</el-button>
         </template>
       </tree-table>
 
